@@ -232,7 +232,7 @@ def spin_wheel(wheel_nums, wheel_colors):
     # Create the wheel as a string to be printed repeedetly 
     numbers_wheel = ""
 
-    def calculate_spaces(wheel_nums,wheel_colors):
+    def calculate_spaces_for_color_wheel(wheel_nums,wheel_colors):
         spaces = 0
         # Itorate all the symbols in the colors list 
         color_wheel = ""
@@ -240,10 +240,10 @@ def spin_wheel(wheel_nums, wheel_colors):
             if wheel_nums[i] != 0:
                 spaces=len(str(wheel_nums[i]))+len(spacing_between_items)-1
             color_wheel+="{}{}".format(" "*spaces,wheel_colors[i])
-        return color_wheel
+        return color_wheel # a string
 
     # Create the visual color wheel 
-    color_wheel= calculate_spaces(wheel_nums,wheel_colors)
+    color_wheel= calculate_spaces_for_color_wheel(wheel_nums,wheel_colors)
     for num in wheel_nums:
         # add that number and spacing after it to a string
         numbers_wheel += "{}{}".format(num,spacing_between_items)
@@ -287,7 +287,7 @@ def spin_wheel(wheel_nums, wheel_colors):
             # go forwards from 0 index to the random stoping point
             for j in range(k,stoping_point+1):
                 # add the length of the item in the number wheel and the spacing to the true position
-                true_position += len(str(color_wheel[j]))
+                true_position += len(str(wheel_nums[j]))
                 true_position += len(spacing_between_items)
                 # Craft where the indicator should be 
                 indicator_line = " " * true_position + indicator
@@ -302,7 +302,7 @@ def spin_wheel(wheel_nums, wheel_colors):
             for k in range(stoping_point,random_backwards_point-1,-1):
                 # add the length of the item in the number wheel and the spacing to the true position
                 true_position -= len(spacing_between_items)
-                true_position -= len(str(color_wheel[k-1]))
+                true_position -= len(str(wheel_nums[k-1]))
                 # Craft where the indicator should be 
                 indicator_line = " " * true_position + indicator
                 # Clear the console and Print all the lines
