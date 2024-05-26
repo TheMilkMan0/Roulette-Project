@@ -1,8 +1,55 @@
-n = 2
-k = 0
-for i in range(n):
-    print(k)
-    for j in range(10):
-        today = j # should be 9 
-    for k in range(today):
-        ehhh = 0
+import time
+wheel_nums = [0,28,9,26,30,11,7,20,32,17,5,22,34,15,3,24,36,13,1,"00",27,10,25,26,12,8,19,31,18,6,21,33,16,4,23,35,14,2]
+wheel_colors = ['@','*','O','*','O','*','O','*','O','*','O','*','O','*','O','*','O','*','O','@','O','*','O','*','O','*','O','*','O','*','O','*','O','*','O','*','O','*']
+spacing_between_items = "   "
+
+def string_color_wheel(wheel_nums,wheel_colors):
+        spaces = 0
+        # Itorate all the symbols in the colors list 
+        color_wheel = ""
+        for i in range(len(wheel_nums)):
+            if wheel_nums[i] != 0:
+                spaces=len(str(wheel_nums[i]))+len(spacing_between_items)-1
+            color_wheel+="{}{}".format(" "*spaces,wheel_colors[i])
+        return color_wheel # a string
+
+# Create the visual color wheel 
+color_wheel= string_color_wheel(wheel_nums,wheel_colors)
+
+numbers_wheel = ""
+for num in wheel_nums:
+    # add that number and spacing after it to a string
+    numbers_wheel += "{}{}".format(num,spacing_between_items)
+
+
+def forwards_calculate_indicator_location(wheel_nums,end_pos):
+    indicator_pos = ""
+    spaces = 0
+    if end_pos < len(wheel_nums):
+        for j in range(end_pos+1):
+            if wheel_nums[0] != wheel_nums[j]:
+                spaces+=len(str(wheel_nums[j]))+len(spacing_between_items)
+        indicator_pos+="{}{}".format(" "*spaces,"!")
+    else:
+        return "INVALID"
+    return indicator_pos # a string
+
+
+def backwards_calculate_indicator_location(wheel_nums,start,end_pos):
+    indicator_pos = ""
+    spaces = 0
+    for j in range(start,end_pos+1,-1):
+        if wheel_nums[start] != wheel_nums[j]:
+            spaces+=len(str(wheel_nums[j]))+len(spacing_between_items)
+    indicator_pos+="{}{}".format(" "*spaces,"!")
+    return indicator_pos # a string
+
+
+for i in range(15):
+    indicator_line = backwards_calculate_indicator_location(wheel_nums,15,i)
+    print(indicator_line)
+    print(numbers_wheel)
+    print(color_wheel)
+    time.sleep(0.5)
+
+
