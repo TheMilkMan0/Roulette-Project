@@ -28,8 +28,12 @@ for num in wheel_nums:
     numbers_wheel += "{}{}".format(num,spacing_between_items)
 
 def new_idea_indicator_location(wheel_nums,end_pos,start_pos):
+    '''
+    Start pos is more of a indicator of where the indicator should be 
+    '''
     indicator_line = ""
-    if end_pos < len(wheel_nums):
+    
+    if end_pos < len(wheel_nums): # saftey net so it doesnt cross over the end 
         spaces = 4 * start_pos
         indicator_line += "{}{}".format(" "*spaces,"!")
     return indicator_line

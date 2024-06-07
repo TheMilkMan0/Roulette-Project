@@ -233,37 +233,44 @@ def spin_wheel(wheel_nums, wheel_colors):
     numbers_wheel = ""
 
     def calculate_spaces_for_color_wheel(wheel_nums,wheel_colors):
-        spaces = 0
+        spaces = 3
         # Itorate all the symbols in the colors list 
         color_wheel = ""
         for i in range(len(wheel_nums)):
-            if wheel_nums[i] != 0:
-                spaces=len(str(wheel_nums[i]))+len(spacing_between_items)-1
+            if wheel_nums[i] == 0:
+                spaces=0
+            else:
+                spaces = 3
             color_wheel+="{}{}".format(" "*spaces,wheel_colors[i])
         return color_wheel # a string
 
     # Create the visual color wheel 
     color_wheel= calculate_spaces_for_color_wheel(wheel_nums,wheel_colors)
-    for num in wheel_nums:   
-        # use the length of the number to determine if we add 2 spaces or 3 spaces
-        length_of_number = len(str(num))
-        if length_of_number == 2:
+    for num in wheel_nums:
+        len_of_num = len(str(num))
+        if len_of_num == 2:
             spacing_between_items = "  "
         else:
             spacing_between_items = "   "
         # add that number and spacing after it to a string
         numbers_wheel += "{}{}".format(num,spacing_between_items)
 
-    def calculate_indicator_location(wheel_nums,wheel_colors,starting_pos,ending_pos):
-        indicator_pos = ""
-        for i in range(starting_pos,ending_pos):
-            if wheel_nums[i] != wheel_nums[starting_pos]:
-                spaces=3
-            indicator_pos+="{}{}".format(" "*spaces,wheel_colors[i])
-        return indicator_pos # a string
+    def calculate_indicator_location(wheel_nums,starting_pos,ending_pos):
+        indicator_line = ""
+        if ending_pos < starting_pos:
+            if ending_pos > len(wheel_nums): # saftey net so it doesnt cross over the end 
+                spaces = 4 * starting_pos
+            indicator_line += "{}{}".format(" "*spaces,"!")
+        else:
+            if ending_pos < len(wheel_nums): # saftey net so it doesnt cross over the end 
+                spaces = 4 * starting_pos
+            indicator_line += "{}{}".format(" "*spaces,"!")
+        
+        
+        return indicator_line
 
 
-    def final_sequence(numbers_wheel,color_wheel,spacing_between_items,starting_index,true_position):
+    def final_sequence(numbers_wheel,color_wheel,spacing_between_items,starting_index):
         final_delay = 0.4
         # get a random index on the wheel that we can pull from
         index_on_wheel = random_index(0,number_of_possibilities-1)
@@ -272,13 +279,9 @@ def spin_wheel(wheel_nums, wheel_colors):
         # Find the visual positon of the indicator based off the lengths of the items up until that point
 
         # go over every index until the spot on the wheel
-        for i in range(starting_index,index_on_wheel):
-            # add the length of the item in the number wheel and the spacing to the true position
-
-            true_position += len(str(wheel_nums[i]))
-            true_position += len(spacing_between_items)
+        for i in range(starting_index,index_on_wheel+1):
             # Craft where the indicator should be 
-            indicator_line = " " * true_position + indicator
+            indicator_line = calculate_indicator_location(wheel_nums,i,index_on_wheel)
             # Clear the console and Print all the lines
             os.system('cls' if os.name == 'nt' else 'clear')
             print(indicator_line)
@@ -301,10 +304,8 @@ def spin_wheel(wheel_nums, wheel_colors):
             # go forwards from 0 index to the random stoping point
             for j in range(k,stoping_point+1):
                 # add the length of the item in the number wheel and the spacing to the true position
-                true_position += len(str(wheel_nums[j]))
-                true_position += len(spacing_between_items)
                 # Craft where the indicator should be 
-                indicator_line = " " * true_position + indicator
+                indicator_line = calculate_indicator_location(wheel_nums,j,stoping_point)
                 # Clear the console and Print all the lines
                 os.system('cls' if os.name == 'nt' else 'clear')
                 print(indicator_line)
@@ -315,10 +316,8 @@ def spin_wheel(wheel_nums, wheel_colors):
             random_backwards_point = random_index(0,stoping_point)
             for k in range(stoping_point,random_backwards_point-1,-1):
                 # add the length of the item in the number wheel and the spacing to the true position
-                true_position -= len(spacing_between_items)
-                true_position -= len(str(wheel_nums[k-1]))
                 # Craft where the indicator should be 
-                indicator_line = " " * true_position + indicator
+                indicator_line = calculate_indicator_location(wheel_nums,k,stoping_point)
                 # Clear the console and Print all the lines
                 os.system('cls' if os.name == 'nt' else 'clear')
                 print(indicator_line)
@@ -326,11 +325,13 @@ def spin_wheel(wheel_nums, wheel_colors):
                 print(color_wheel)
                 time.sleep(move_delay)
 
-        return k, true_position
+        return k
     # move around the board randomly 
-    it_stoped_here, true_position = random_move_around(numbers_wheel,color_wheel,spacing_between_items)
-    # then do the final sequence
-    index_on_wheel = final_sequence(numbers_wheel,color_wheel,spacing_between_items,it_stoped_here,true_position)
+    it_stoped_here = random_move_around(numbers_wheel,color_wheel,spacing_between_items)
+    #then do the final sequence
+
+    # TESTING Vars:
+    index_on_wheel = final_sequence(numbers_wheel,color_wheel,spacing_between_items,it_stoped_here)
     return wheel_nums[index_on_wheel],wheel_colors[index_on_wheel]
 
 
@@ -420,6 +421,7 @@ if __name__ == "__main__":
         profiles = load_user_profiles("roulette_users.txt")
         all_bets = betting(profiles)
         num_result, color_result = spin_wheel(wheel_nums,wheel_colors)
+        print(str(num_result))
         process_bets(num_result,color_result,all_bets,profiles)
 
 
