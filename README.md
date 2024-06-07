@@ -31,3 +31,24 @@ Welcome to the Console Roulette Game! This is a fun, console-based simulation of
 
 3. The name you enter to the question 'Who is betting' is CASE-SENSITIVE to the next file
    Then once everyone is done betting type 'done' inside the "Who is betting?" question
+
+## File Format
+The roulette_users.txt file stores player information. Ensure it follows the format:
+
+```
+Name,Amount
+```
+Each player’s name and balance should be on a new line.
+
+## Adding New Players
+To add new players:
+
+Open 'roulette_users.txt'.
+Add a new line with the player's name and their starting balance in the following format:
+```
+NewPlayerName,StartingBalance
+```
+Example:
+```
+Chris,125
+```
