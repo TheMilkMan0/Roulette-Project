@@ -1,4 +1,4 @@
-alex,170
+alex,160
 xyra,20
 harsh,5
 gma,87

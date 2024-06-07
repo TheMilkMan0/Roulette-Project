@@ -2,14 +2,17 @@ import random
 import time
 import os
 def new_wheel():
-    '''
-    This function creates a new wheel lists 
-    The numbers list will be the random order of the roulett wheel
-    The colors list will be filled with symbols that match the color of the number at the same index 
-    The colors are @ for green, * for black, O for red.
+    """
+    Creates a new roulette wheel setup.
+
+    The function initializes two lists:
+    1. `numbers` - the numbers on the roulette wheel in their specific order.
+    2. `colors` - corresponding symbols for each number's color on the wheel:
+       '@' for green, '*' for black, 'O' for red.
+
     Returns:
-        tuple - Numbers (List), Colors (List)
-    '''
+        tuple: A pair containing the list of `numbers` and the list of `colors`.
+    """
     # create a new list with the order of a roulette wheel
     numbers = [0,28,9,26,30,11,7,20,32,17,5,22,34,15,3,24,36,13,1,"00",27,10,25,26,12,8,19,31,18,6,21,33,16,4,23,35,14,2]
     # match the numbers with their color in sybols
@@ -25,11 +28,31 @@ def new_wheel():
 
 
 def random_index(min,cap):
-    # Returns a random number from 0 to the cap integeger 
+    """
+    Generates a random integer between the given range (inclusive).
+
+    Args:
+        min (int): The lower bound of the range.
+        cap (int): The upper bound of the range.
+
+    Returns:
+        int: A random integer within the specified range.
+    """
     return random.randint(min,cap)
 
 
 def load_user_profiles(filename):
+    """
+    Loads user profiles from a file and stores them in a dictionary.
+
+    Each line in the file represents a user profile with the format "name,balance".
+
+    Args:
+        filename (str): The name of the file containing user profiles.
+
+    Returns:
+        dict: A dictionary where the keys are usernames (in lowercase) and the values are their balances.
+    """
     # Iniculize a new prfile dictionary, storing all the user info
     profiles_dict = {}
     # Open the file that has all the profiles saved on each line
@@ -51,33 +74,47 @@ def load_user_profiles(filename):
 
 
 def collect_profile_info(profiles_dict,who_bets):
-    '''
+    """
+    Retrieves the name and balance of a specified bettor from the profiles dictionary.
+
+    Args:
+        profiles_dict (dict): Dictionary containing user profiles.
+        who_bets (str): The name of the bettor.
+
     Returns:
-        current_better - Better name
-        better_balence - Balence of the better
-    '''
+        tuple: A pair containing the bettor's name and their balance.
+    """
     current_better = who_bets
     better_balence = profiles_dict[who_bets]
     return current_better, better_balence
 
 
 def check_profile_exist(profiles_dict,name):
-    '''
-    This function will check if a given name exists in the profiles
+    """
+    Checks if a given user profile exists in the profiles dictionary.
+
+    Args:
+        profiles_dict (dict): Dictionary containing user profiles.
+        name (str): The name to check for existence.
+
     Returns:
-        True
-        False
-    '''
-    # Check if the key in the profiles dict exists
-    try:
-        blah = profiles_dict[name]
-        return True
-    # If it doesnt exist, return False
-    except:
-        return False
+        bool: True if the profile exists, False otherwise.
+    """
+    # This if a if statement checking if a name is in the keys of profiles_dict
+    return name in profiles_dict 
 
 
 def collect_single_profile_bets(better,balance):
+    """
+    Collects bets from a single user based on their current balance and chosen options.
+
+    Args:
+        better (str): The name of the bettor.
+        balance (int): The bettor's current balance.
+
+    Returns:
+        list: A list of tuples representing the user's bets and their respective amounts.
+    """
     # store all the betting options visually in the 
     betting_options = """
 **** BETTING OPTIONS ****
@@ -196,10 +233,15 @@ def collect_single_profile_bets(better,balance):
 # Black/Red, Odd/Even, Range (1-12, 13-24, 25,36), Half Ranges (1-18, 19-36), Single Numbers
 
 def betting(profiles_dict):
-    '''
-    This function will collect all the bets from every user until everyone is done 
-    and return the bets in the form of a dictionary 
-    '''
+    """
+    Collects bets from all users by asking in console and stores them in a dictionary.
+
+    Args:
+        profiles_dict (dict): Dictionary containing user profiles.
+
+    Returns:
+        dict: A dictionary where keys are bettor names and values are their list of bets.
+    """
     all_bets = {}
     # ask who is betting, if the user types "Done Betting" then move on to spin the wheel
     while True:
@@ -224,7 +266,17 @@ def betting(profiles_dict):
 
 
 def spin_wheel(wheel_nums, wheel_colors):
-    indicator = "!"
+    """
+    Simulates spinning the roulette wheel and returns the result.
+
+    Args:
+        wheel_nums (list): List of numbers on the roulette wheel.
+        wheel_colors (list): List of colors corresponding to each number.
+
+    Returns:
+        tuple: The number and color result of the spin.
+    """
+    indicator = "*"
     # set a variable to the number of elements on the wheel list
     number_of_possibilities = len(wheel_nums)
     # 
@@ -232,7 +284,18 @@ def spin_wheel(wheel_nums, wheel_colors):
     # Create the wheel as a string to be printed repeedetly 
     numbers_wheel = ""
 
-    def calculate_spaces_for_color_wheel(wheel_nums,wheel_colors):
+    def create_string_of_color_wheel(wheel_nums,wheel_colors):
+        """
+        Creates a string with the symbols representing the colors being spaced
+        by 3 empty spaces inbetween
+
+        Args:
+            wheel_nums (list): List of numbers on the wheel.
+            wheel_colors (list): List of colors corresponding to each number.
+
+        Returns:
+            str: A formatted string representing the color wheel.
+        """
         spaces = 3
         # Itorate all the symbols in the colors list 
         color_wheel = ""
@@ -245,7 +308,7 @@ def spin_wheel(wheel_nums, wheel_colors):
         return color_wheel # a string
 
     # Create the visual color wheel 
-    color_wheel= calculate_spaces_for_color_wheel(wheel_nums,wheel_colors)
+    color_wheel= create_string_of_color_wheel(wheel_nums,wheel_colors)
     for num in wheel_nums:
         len_of_num = len(str(num))
         if len_of_num == 2:
@@ -256,6 +319,18 @@ def spin_wheel(wheel_nums, wheel_colors):
         numbers_wheel += "{}{}".format(num,spacing_between_items)
 
     def calculate_indicator_location(wheel_nums,starting_pos,ending_pos):
+        """
+        Calculates the position of the indicator for the wheel.
+
+        Args:
+            wheel_nums (list): List of numbers on the wheel.
+            starting_pos (int): Where the indicator should be after returning this function
+            ending_pos (int): The ending position of the indicator, 
+                this is outside this functions scope, only used as a safty net
+
+        Returns:
+            str: A formatted string representing the indicator's position.
+        """
         indicator_line = ""
         if ending_pos < starting_pos:
             if ending_pos > len(wheel_nums): # saftey net so it doesnt cross over the end 
@@ -271,6 +346,18 @@ def spin_wheel(wheel_nums, wheel_colors):
 
 
     def final_sequence(numbers_wheel,color_wheel,spacing_between_items,starting_index):
+        """
+        Executes the final sequence of a wheel spin, visually displaying the wheel's progression.
+
+        Args:
+            numbers_wheel (list): A list of numbers representing positions on the wheel.
+            color_wheel (list): A list of colors corresponding to the positions on the wheel.
+            spacing_between_items (int): The spacing between items on the display.
+            starting_index (int): The index on the wheel where the sequence starts.
+
+        Returns:
+            int: The final index on the wheel after the sequence completes.
+    """
         final_delay = 0.4
         # get a random index on the wheel that we can pull from
         index_on_wheel = random_index(0,number_of_possibilities-1)
@@ -292,6 +379,17 @@ def spin_wheel(wheel_nums, wheel_colors):
         return index_on_wheel
     
     def random_move_around(numbers_wheel,color_wheel,spacing_between_items):
+        """
+        Simulates random movements on the wheel before determining a stopping point for the final sequence function to pick up on. 
+
+        Args:
+            numbers_wheel (list): A list of numbers representing positions on the wheel.
+            color_wheel (list): A list of colors corresponding to the positions on the wheel.
+            spacing_between_items (int): The spacing between items on the display.
+
+        Returns:
+            int: The index on the wheel where the random movement stops.
+        """
         # how often to move the cursor
         move_delay = 0.4
         # Find the visual positon of the indicator based off the lengths of the items up until that point
@@ -336,6 +434,18 @@ def spin_wheel(wheel_nums, wheel_colors):
 
 
 def process_bets(num_result, color_result, all_bets, profiles):
+    """
+    Processes all bets based on the result of the wheel spin and updates player profiles.
+
+    Args:
+        num_result (int or str): The number result of the wheel spin.
+        color_result (str): The color result of the wheel spin ('*' for black, 'O' for red, other for green).
+        all_bets (dict): A dictionary where keys are player names and values are lists of tuples with bet types and amounts.
+        profiles (dict): A dictionary where keys are player names and values are their current balances.
+
+    Returns:
+        None
+    """
     # if someone wins this amount or over it will show a message congradulaing them 
     big_winner_threshold = 30
 
@@ -404,24 +514,34 @@ def process_bets(num_result, color_result, all_bets, profiles):
 
 
 def save_profiles(profiles):
+    """
+    Saves the profiles with updated balances to a text file.
+
+    Args:
+        profiles (dict): A dictionary where keys are player names and values are their current balances.
+
+    Returns:
+        None
+    """
     user_file = open("roulette_users.txt",'w')
     for key in profiles:
         betters_name = key
         betters_balence = profiles[key]
         user_file.write("{},{}\n".format(betters_name,betters_balence))
     user_file.close()
+    print("Profiles Saved.")
 
 
     
 
 if __name__ == "__main__":
-
+    color_key = {'@':'Green','*':'Black','O':'Red'}
     wheel_nums, wheel_colors = new_wheel()
     while True:
         profiles = load_user_profiles("roulette_users.txt")
         all_bets = betting(profiles)
         num_result, color_result = spin_wheel(wheel_nums,wheel_colors)
-        print(str(num_result))
+        print("{} {}".format(str(num_result),color_key[str(color_result)]))
         process_bets(num_result,color_result,all_bets,profiles)
 
 

@@ -64,11 +64,13 @@ def backwards_calculate_indicator_location(wheel_nums,start,end_pos):
 
 
 
-for i in range(15):
-    indicator_line = new_idea_indicator_location(wheel_nums,15,i)
-    print(indicator_line)
-    print(numbers_wheel)
-    print(color_wheel)
-    time.sleep(0.5)
+# for i in range(15):
+#     indicator_line = new_idea_indicator_location(wheel_nums,15,i)
+#     print(indicator_line)
+#     print(numbers_wheel)
+#     print(color_wheel)
+#     time.sleep(0.5)
 
 
+color_key = {'@':'Green','*':'Black','0':'Red'}
+print(color_key['0'])
