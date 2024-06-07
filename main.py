@@ -244,9 +244,23 @@ def spin_wheel(wheel_nums, wheel_colors):
 
     # Create the visual color wheel 
     color_wheel= calculate_spaces_for_color_wheel(wheel_nums,wheel_colors)
-    for num in wheel_nums:
+    for num in wheel_nums:   
+        # use the length of the number to determine if we add 2 spaces or 3 spaces
+        length_of_number = len(str(num))
+        if length_of_number == 2:
+            spacing_between_items = "  "
+        else:
+            spacing_between_items = "   "
         # add that number and spacing after it to a string
         numbers_wheel += "{}{}".format(num,spacing_between_items)
+
+    def calculate_indicator_location(wheel_nums,wheel_colors,starting_pos,ending_pos):
+        indicator_pos = ""
+        for i in range(starting_pos,ending_pos):
+            if wheel_nums[i] != wheel_nums[starting_pos]:
+                spaces=3
+            indicator_pos+="{}{}".format(" "*spaces,wheel_colors[i])
+        return indicator_pos # a string
 
 
     def final_sequence(numbers_wheel,color_wheel,spacing_between_items,starting_index,true_position):
@@ -432,3 +446,6 @@ if __name__ == "__main__":
 
 # small_bet_threshold = 4
 #   the threshold for a winning bet to be considered a small win. If the total number of winnings for a better is this number or smaller than this number it will print a sad message; encauraging them to bet more to win more.
+
+
+
