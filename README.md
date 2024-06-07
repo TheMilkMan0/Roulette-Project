@@ -6,12 +6,8 @@ Welcome to the Console Roulette Game! This is a fun, console-based simulation of
 
 - [Features](#features)
 - [Setup](#setup)
-- [How to Play](#how-to-play)
 - [File Format](#file-format)
 - [Adding New Players](#adding-new-players)
-- [Running the Game](#running-the-game)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Features
 
