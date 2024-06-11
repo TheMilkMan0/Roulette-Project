@@ -148,7 +148,7 @@ def collect_single_profile_bets(better,balance):
     user_bets = []
 
     while True:
-        os.system('cls' if os.name == 'nt' else 'clear')
+        
         print("Hi {}, you have ${} in your balence".format(better.capitalize(),balance))
         print(betting_options)
         user_input = input("Choose an option: ")
@@ -335,11 +335,11 @@ def spin_wheel(wheel_nums, wheel_colors):
         if ending_pos < starting_pos:
             if ending_pos > len(wheel_nums): # saftey net so it doesnt cross over the end 
                 spaces = 4 * starting_pos
-            indicator_line += "{}{}".format(" "*spaces,"!")
+            indicator_line += "{}{}".format(" "*spaces,indicator)
         else:
             if ending_pos < len(wheel_nums): # saftey net so it doesnt cross over the end 
                 spaces = 4 * starting_pos
-            indicator_line += "{}{}".format(" "*spaces,"!")
+            indicator_line += "{}{}".format(" "*spaces,indicator)
         
         
         return indicator_line

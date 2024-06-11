@@ -1,4 +1,5 @@
-alex,160
+alex,0
 xyra,20
 harsh,5
-gma,87
+gma,84
+yuan,355
