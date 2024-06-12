@@ -103,129 +103,117 @@ def check_profile_exist(profiles_dict,name):
     # This if a if statement checking if a name is in the keys of profiles_dict
     return name in profiles_dict 
 
+def user_selection_animation(input):
+    os.system('cls' if os.name == 'nt' else 'clear')
+    for i in range(6):
+        print(str(input))
+        time.sleep(0.1)
+    time.sleep(0.1)
+    os.system('cls' if os.name == 'nt' else 'clear')
 
-def collect_single_profile_bets(better,balance):
+
+def collect_single_profile_bets(user_name,user_balance):
     """
     Collects bets from a single user based on their current balance and chosen options.
 
     Args:
-        better (str): The name of the bettor.
-        balance (int): The bettor's current balance.
+        user_name (str): The name of the bettor.
+        user_balance (int): The bettor's current balance.
 
     Returns:
         list: A list of tuples representing the user's bets and their respective amounts.
     """
-    # store all the betting options visually in the 
-    betting_options = """
-**** BETTING OPTIONS ****
-    Color:    1
-    Parity:   2
-    Done Betting: 0
-"""
-
-    color_options = """
-**** COLOR OPTIONS ****
-    Black:    1
-    Red:      2
-    Go Back:  9
-"""
-
-    parity_options = """
-**** PARITY OPTIONS ****
-    Odd:      1
-    Even:     2
-    Go Back:  9
-"""
-
-    range_options = """
-**** RANGE OPTIONS ****
-    Odd:      1
-    Even:     2
-    Go Back:  9
-"""
-
-    # Iniculize a new dictionary to track their bets 
     user_bets = []
 
-    while True:
-        
-        print("Hi {}, you have ${} in your balence".format(better.capitalize(),balance))
-        print(betting_options)
-        user_input = input("Choose an option: ")
+    main_header = '**** BETTING OPTIONS ****'
+    
+    # Store the betting menus inside 
+    betting_options = {
+        'Color': ['Red','Black','Green'],
+        'Parity': ['Odd','Even'],
+        'Range': ['1-18','19-36','1-12','13-24','25-36']
+    }
 
-        # If color options are selected
-        if user_input == "1":
-            # Clear the console and print options
-            os.system('cls' if os.name == 'nt' else 'clear')
-            # Display user info at top
-            print("{}, Balance: ${}".format(better.capitalize(),balance))
-            # Print all the options for colors (Black or Red)
-            print(color_options)
-            # Let the user chose the color or go back (9)
-            color_choice = input("Select color or go back: ")
-            # if they have a proper selecton of color  
-            if color_choice in ["1","2"]:
-                # Show the user how much they are alloted to bet 
-                print("You have: ${}".format(balance))
-                # Ask the user how much they want to bet
-                bet_ammount = (input("How much do want to bet?\n"))
-                # check that the input was proper 
-                try:
-                    bet_ammount = int(bet_ammount)
-                    worked = True
-                except:
-                    print("You did not give a proper integer")
-                    time.sleep(2)
+    while True:
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print('Hi {}, you have ${} in your balence.\n'.format(user_name,user_balance))
+        print(main_header)
+        # this counter will be the numbers displayed  
+        counter = 1 # has to be reset everytime
+        # Show betting options
+        for key in betting_options:
+            print("     {:10}:{}".format(key,counter))
+            counter += 1
+        print("\n     Done Betting   :0")
+
+        # Ask for main selection
+        user_input = input("Type number of selection: ")
+        # confirm input is valid integer by converting 
+        try:
+            user_input = int(user_input)
+        except:
+            user_selection_animation("Improper Integer!")
+            # skip this entire loop because it was a imporoper input 
+            continue
+        if user_input == 0:
+            # Break from the while loop, returning the bets
+            break  
+        # the user input will start from 1 going to the length of the betting options
+        if 0 < user_input <= len(betting_options):
+            # user_selection holds the name of the section, not the index. ex: 'Range' or 'Color'
+            user_selection = list(betting_options.keys())[user_input-1] # '-1' index offset
+            user_selection_animation(user_selection)
+
+            # Show secondary menu
+            print("Hi {}, Balance: ${}\n".format(user_name,user_balance))
+            print("**** {} OPTIONS ****".format(user_selection))
+            # selection counter for secondary menu (the numbers on the right will be this counter)
+            sec_counter = 1
+            # sec_key will hold 'black' or '1-12' or 'even' depending which main section the user went into 
+            # This will print (show) the menu 
+            for sec_key in betting_options[user_selection]:
+                print("     {:10}:{}".format(sec_key,sec_counter))
+                sec_counter += 1
+            print("\n     Go Back   :0")
+            sec_user_input = input("Type number of selection: ")
+            
+            # Here im not sure how i made the go back work and also check if number is valid and how to add the bet to the dictionary and remeove from balanece, and make it all work that if the selection is wrong it will go back to the main menu 
+            # Check if the secondary input is valid 
+            try:
+                sec_user_input = int(sec_user_input)
+            except:
+                user_selection_animation("Improper Integer!!")
+                # Restart at the beggining of the while loop because the imporoper input 
+                continue
+            if sec_user_input == 0:
+                user_selection_animation('Going Back!!!')
+                # Restart at the beggining of the while loop because the imporoper input 
+                continue
+            if 0 < sec_user_input < len(betting_options[user_selection])+1:
+                sec_user_selection = list(betting_options[user_selection])[sec_user_input-1]
+                print("You have: ${}".format(user_balance))
+                bet_ammount = input("Amount to bet on {}?\n".format(sec_user_selection))
+                # Check the input is a valid integer 
+                try: bet_ammount = int(bet_ammount)
+                except: 
+                    user_selection_animation("Improper integer!!")
+                    # Restart at the beggining of the while loop because the imporoper input 
+                    continue 
+                # Check the user has enough in their balance
+                if user_balance - bet_ammount >= 0:
+                    user_balance -= bet_ammount
+                    # Save the type of bet and amount being bet 
+                    user_bets.append((sec_user_selection,bet_ammount))
+                    print("Bet went through!")
+                # User doesnt have enough money to bet the money they entered 
+                else:
+                    print("Insufficient funds. Total funds: ${}".format(user_balance))
+                    time.sleep(3)
                     continue
 
-                
-                # if the profile has suficient funds 
-                if balance - bet_ammount >= 0:
-                    # update the balance amount
-                    balance -= bet_ammount
-                    # set the chosen color to a variable 
-                    color = "black" if color_choice == "1" else "red"
-                    # save that bet in a list with the elements being tuples with the bet type and amount
-                    user_bets.append((color,bet_ammount))
-                    print("Bet went through!")
-                # if the user bet more than their balance, tell them and go back to main menu
-                else:
-                    print("Insufficient funds. Total funds: ${}".format(balance))
-                    continue # Goes back to main menu
-            # if they chose to go back after inside the color menu, go back to main menu
-            if color_choice == "9":
-                continue  # Goes back to main menu
-        # if the user chose even/odd choices
-        if user_input == "2":
-            # Clear the console then print the options
-            os.system('cls' if os.name == 'nt' else 'clear')
-            # Display user info at top
-            print("{}, Balance: ${}".format(better.capitalize(),balance))
-            # show the user the options for parity
-            print(parity_options)
-            # ask which parity they want to bet on
-            parity_choice = input("Select parity or go back: ")
-            # check that the user selected a valid options
-            if parity_choice in ['1','2']:
-                # show the user how much balence they have
-                print("You have: ${}".format(balance))
-                # ask how much they want to bet
-                bet_ammount = int(input("How much do want to bet?\n"))
-                # check if the user has enough money to bet with 
-                if balance - bet_ammount >= 0:
-                    # update the balance amount
-                    balance -= bet_ammount
-                    # set parity to the one they chose
-                    parity = "even" if parity_choice == "2" else "odd"
-                    # save the bet to a list with elements being tuples with the parity and bet amount inside 
-                    user_bets.append((parity,bet_ammount))
-                    print("Bet went through!")
-                # if the user bet more than their balance, tell them and go back to main menu
-                else:
-                    print("Insufficient funds. Total funds: ${}".format(balance))
-                    continue # Goes back to main menu
-        if user_input == "0":
-            break
+
+            time.sleep(2)
+    user_selection_animation("Bets are in!!")
     return user_bets
 
 
@@ -276,11 +264,9 @@ def spin_wheel(wheel_nums, wheel_colors):
     Returns:
         tuple: The number and color result of the spin.
     """
-    indicator = "*"
+    indicator = "!"
     # set a variable to the number of elements on the wheel list
     number_of_possibilities = len(wheel_nums)
-    # 
-    spacing_between_items = "   "
     # Create the wheel as a string to be printed repeedetly 
     numbers_wheel = ""
 
@@ -358,7 +344,7 @@ def spin_wheel(wheel_nums, wheel_colors):
         Returns:
             int: The final index on the wheel after the sequence completes.
     """
-        final_delay = 0.4
+        final_delay = 0.2
         # get a random index on the wheel that we can pull from
         index_on_wheel = random_index(0,number_of_possibilities-1)
         while index_on_wheel <= starting_index:
@@ -391,7 +377,7 @@ def spin_wheel(wheel_nums, wheel_colors):
             int: The index on the wheel where the random movement stops.
         """
         # how often to move the cursor
-        move_delay = 0.4
+        move_delay = 0.2
         # Find the visual positon of the indicator based off the lengths of the items up until that point
         true_position = 0
         # ajust how many random turn arounds you want to have
@@ -457,23 +443,38 @@ def process_bets(num_result, color_result, all_bets, profiles):
     
     # Process the result 
     if num_result == "00" or num_result == "0":
-        winning_bets.append("zero")
+        winning_bets.append("Zero")
     elif num_result % 2 == 0:
-        winning_bets.append("even")
+        winning_bets.append("Even")
     elif num_result % 2 == 1:
-        winning_bets.append("odd")
+        winning_bets.append("Odd")
 
     if color_result == "*":
-        winning_bets.append("black")
+        winning_bets.append("Black")
     elif color_result == "O":
-        winning_bets.append("red")
+        winning_bets.append("Red")
     else:
-        winning_bets.append("green")
-
-    bets_multiply = {"even":2,"odd":2,
-                     "black":2,"red":2,
-                     "doubleZero": 35, "zero":35} # just add all the types of bets here and their multiplicity 
+        winning_bets.append("Green")
     
+    if num_result != "00" and num_result != "0":
+        if 1 <= num_result <= 18:
+            winning_bets.append("1-18")
+        if 19 <= num_result <= 36:
+            winning_bets.append("19-36")
+        if 1 <= num_result <= 12:
+            winning_bets.append("1-12")
+        if 13 <= num_result <= 24:
+            winning_bets.append("13-24")
+        if 25 <= num_result <= 36:
+            winning_bets.append("25-36")
+    
+
+    bets_multiply = {"Even":2,"Odd":2,
+                     "Black":2,"Red":2,
+                     "doubleZero": 35, "Zero":35,
+                     "1-12": 3, "13-24":3, "25-36":3,
+                     "1-18":2, "19-36":2} # just add all the types of bets here and their multiplicity 
+
     for key in all_bets:
         betters_losings = 0
         betters_winnings = 0
@@ -496,6 +497,7 @@ def process_bets(num_result, color_result, all_bets, profiles):
         profiles[better_name] += betters_winnings - betters_losings
         # Now that we are done using dictionarys, we switch to the capitalized name
         better_name = better_name.capitalize()
+        print()
         if betters_winnings == 0:
             print("{} didnt win... Better Luck Next Time!".format(better_name,betters_winnings))
         # if this better won only a small amount print a sad message
@@ -529,7 +531,7 @@ def save_profiles(profiles):
         betters_balence = profiles[key]
         user_file.write("{},{}\n".format(betters_name,betters_balence))
     user_file.close()
-    print("Profiles Saved.")
+    print("\nProfiles Saved.")
 
 
     
@@ -551,13 +553,14 @@ if __name__ == "__main__":
 # indicator = "!" 
 #   the thing shown above the number its at (represents the ball)
 
-# spacing_between_items = "   "
+# spacing_between_items = "   " or "   "
 #   the spaces between the wheel items show visually 
+#   if you were to change this you have to change both (inside the if statements) an equal amount!!!
 
-# final_delay = 0.4
+# final_delay = 0.2
 #   the timing of the indicator moving on the final roll to the winning number
 
-# move_delay = 0.08
+# move_delay = 0.2
 #   the timing of the indicator moving during the random moving to throw off the players
 
 # number_of_randomness = 6

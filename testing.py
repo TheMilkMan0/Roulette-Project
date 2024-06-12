@@ -87,7 +87,7 @@ def ask_for_individual_bets_from_user():
 
     main_header = '**** BETTING OPTIONS ****'
     
-
+    
     betting_options = {
         'Color': {'Red':1,'Black':2,'Green':3},
         'Parity': {'Odd':1,'Even':2},
