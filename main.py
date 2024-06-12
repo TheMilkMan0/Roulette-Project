@@ -555,7 +555,7 @@ if __name__ == "__main__":
 
 # spacing_between_items = "   " or "   "
 #   the spaces between the wheel items show visually 
-#   if you were to change this you have to change both (inside the if statements) an equal amount!!!
+#   !!!! if you were to change this you have to change both (inside the if statements) an equal amount!!!
 
 # final_delay = 0.2
 #   the timing of the indicator moving on the final roll to the winning number
@@ -563,8 +563,10 @@ if __name__ == "__main__":
 # move_delay = 0.2
 #   the timing of the indicator moving during the random moving to throw off the players
 
-# number_of_randomness = 6
-#   number of times we mess with the player going back and forth before the final winning number
+# number_of_randomness = random_index(0,3)
+#   number of times (randomized) we mess with the player going back and forth before the final winning number
+#   Change the second number in 'random_index(0,3)' to increase the number of times it MAY be able to switch around
+#   If you want it to always switch around a set amount of times remove the 'random_index(0,3)' and replace it with a integer
 
 # big_winner_threshold = 30
 #   the threshold for a winning bet to be considered a big win. If the total number of winnings for a better is this number or over this number it will print a big message congradulating them
