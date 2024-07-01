@@ -131,7 +131,8 @@ def collect_single_profile_bets(user_name,user_balance):
     betting_options = {
         'Color': ['Red','Black','Green'],
         'Parity': ['Odd','Even'],
-        'Range': ['1-18','19-36','1-12','13-24','25-36']
+        'Range': ['1-18','19-36','1-12','13-24','25-36'],
+        'Elias Gay': ['Gay?','Not Gay?']
     }
 
     while True:
@@ -344,7 +345,7 @@ def spin_wheel(wheel_nums, wheel_colors):
         Returns:
             int: The final index on the wheel after the sequence completes.
     """
-        final_delay = 0.2
+        final_delay = 0.15
         # get a random index on the wheel that we can pull from
         index_on_wheel = random_index(0,number_of_possibilities-1)
         while index_on_wheel <= starting_index:
@@ -377,7 +378,7 @@ def spin_wheel(wheel_nums, wheel_colors):
             int: The index on the wheel where the random movement stops.
         """
         # how often to move the cursor
-        move_delay = 0.2
+        move_delay = 0.15
         # Find the visual positon of the indicator based off the lengths of the items up until that point
         true_position = 0
         # ajust how many random turn arounds you want to have

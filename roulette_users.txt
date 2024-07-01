@@ -1,6 +1,7 @@
-alex,55
+alex,175
 xyra,120
 harsh,50
 gma,50
 yuan,50
 david,50
+elias,0
