@@ -131,8 +131,7 @@ def collect_single_profile_bets(user_name,user_balance):
     betting_options = {
         'Color': ['Red','Black','Green'],
         'Parity': ['Odd','Even'],
-        'Range': ['1-18','19-36','1-12','13-24','25-36'],
-        'Elias Gay': ['Gay?','Not Gay?']
+        'Range': ['1-18','19-36','1-12','13-24','25-36']
     }
 
     while True:
