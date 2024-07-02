@@ -364,7 +364,7 @@ def spin_wheel(wheel_nums, wheel_colors):
         Returns:
             int: The final index on the wheel after the sequence completes.
     """
-        final_delay = 0.15
+        final_delay = 0.20
         # get a random index on the wheel that we can pull from
         index_on_wheel = random_index(0,number_of_possibilities-1)
         while index_on_wheel <= starting_index:
@@ -397,7 +397,7 @@ def spin_wheel(wheel_nums, wheel_colors):
             int: The index on the wheel where the random movement stops.
         """
         # how often to move the cursor
-        move_delay = 0.15
+        move_delay = 0.20
         # Find the visual positon of the indicator based off the lengths of the items up until that point
         true_position = 0
         # ajust how many random turn arounds you want to have
