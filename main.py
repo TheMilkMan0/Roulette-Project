@@ -1,6 +1,8 @@
 import random
 import time
 import os
+import sys 
+
 def new_wheel():
     """
     Creates a new roulette wheel setup.
@@ -88,6 +90,22 @@ def collect_profile_info(profiles_dict,who_bets):
     better_balence = profiles_dict[who_bets]
     return current_better, better_balence
 
+# Function to detect key press based on the operating system
+def get_key():
+    if os.name == 'nt':
+        import msvcrt
+        return msvcrt.getch().decode('utf-8')
+    else:
+        import tty, termios
+        fd = sys.stdin.fileno()
+        old_settings = termios.tcgetattr(fd)
+        try:
+            tty.setraw(fd)
+            key = sys.stdin.read(1)
+        finally:
+            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+        return key
+
 
 def check_profile_exist(profiles_dict,name):
     """
@@ -147,7 +165,8 @@ def collect_single_profile_bets(user_name,user_balance):
         print("\n     Done Betting   :0")
 
         # Ask for main selection
-        user_input = input("Type number of selection: ")
+        print("Type number of selection: ")
+        user_input = get_key()
         # confirm input is valid integer by converting 
         try:
             user_input = int(user_input)
@@ -175,7 +194,8 @@ def collect_single_profile_bets(user_name,user_balance):
                 print("     {:10}:{}".format(sec_key,sec_counter))
                 sec_counter += 1
             print("\n     Go Back   :0")
-            sec_user_input = input("Type number of selection: ")
+            print("Type number of selection: ")
+            sec_user_input = get_key()
             
             # Here im not sure how i made the go back work and also check if number is valid and how to add the bet to the dictionary and remeove from balanece, and make it all work that if the selection is wrong it will go back to the main menu 
             # Check if the secondary input is valid 
