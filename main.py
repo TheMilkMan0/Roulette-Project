@@ -154,7 +154,7 @@ def collect_single_profile_bets(user_name,user_balance):
 
     while True:
         os.system('cls' if os.name == 'nt' else 'clear')
-        print('Hi {}, you have ${} in your balence.\n'.format(user_name,user_balance))
+        print('Hi {}, you have ${} in your balence.\n'.format(user_name.title(),user_balance))
         print(main_header)
         # this counter will be the numbers displayed  
         counter = 1 # has to be reset everytime
