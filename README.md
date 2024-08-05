@@ -17,6 +17,7 @@ Welcome to the Console Roulette Game! This is a fun, console-based simulation of
 - **Range Bets**: Bet on 1-12, 13-24, 25-36, 1-18, 19-36
 - **Customizable Animated Wheel**: Watch a simulated indicator move around the linear wheel and land on a number.
 - **Persistent Player Data**: Player data is stored in a text file, tracking their balance.
+- **Insta Press Menus**: The menus are insta pressable, meaning the user only needs to press the number on their keyboard to go instantly into the menu. 
 
 ## Setup
 
